@@ -1,0 +1,7 @@
+{
+  "name": "deployd-sendgrid",
+  "version": "0.0.1",
+  "dependencies": {
+    "nodemailer": "~0.3.28"
+  }
+}
