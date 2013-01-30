@@ -1,7 +1,9 @@
 {
-  "name": "deployd-sendgrid",
-  "version": "0.0.1",
+  "name": "deployd-email",
+  "version": "0.0.2",
   "dependencies": {
-    "nodemailer": "~0.3.28"
+    "nodemailer" : "~0.3.37",
+    "email-templates" : "0.0.7",
+    "async" : "0.1.22"
   }
 }
