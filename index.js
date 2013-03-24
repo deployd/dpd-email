@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies
  */
@@ -106,9 +105,6 @@ Email.prototype.handle = function ( ctx, next ) {
   if ( Object.keys(errors).length ) {
     return ctx.done({ statusCode: 400, errors: errors });
   }
-
-  options.locals = {};
-  options.locals.name = 'Blah';
 
   var that = this;
 
