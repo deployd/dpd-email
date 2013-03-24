@@ -1,5 +1,5 @@
 {
-  "name": "deployd-email",
+  "name": "dpd-email",
   "version": "0.0.2",
   "dependencies": {
     "nodemailer" : "~0.3.37",
