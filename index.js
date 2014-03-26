@@ -15,16 +15,21 @@ var Resource       = require('deployd/lib/resource'),
 function Email( ) {
 
   Resource.apply( this, arguments );
-
+  
+  var authParams=null;
+  if(this.config.username!==''){
+    authParams={
+      user: this.config.username,
+      pass: this.config.password
+    };
+  }
+  
   this.transport = nodemailer.createTransport(smtp({
     host : this.config.host || 'localhost',
     port : parseInt(this.config.port, 10) || 25,
     secure : this.config.ssl,
     //service: 'gmail',
-    auth : {
-      user: this.config.username,
-      pass: this.config.password
-    }
+    auth : authParams
   }))
 
   this.transport.use('compile', htmlToText({}) );
