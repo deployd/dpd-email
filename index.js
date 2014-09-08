@@ -4,29 +4,30 @@
 
 var Resource       = require('deployd/lib/resource'),
     util           = require('util'),
-    path           = require('path'),
-    async          = require('async'),
     nodemailer     = require('nodemailer'),
-    templatesDir   = path.join( __dirname, '../..', 'resources', 'email', 'templates' ),
-    emailTemplates = require('email-templates');
+    smtp           = require('nodemailer-smtp-transport'),
+    htmlToText     = require('nodemailer-html-to-text').htmlToText;
 
 /**
  * Module setup.
  */
 
-function Email( options ) {
+function Email( ) {
 
   Resource.apply( this, arguments );
 
-  this.transport = nodemailer.createTransport('SMTP', {
+  this.transport = nodemailer.createTransport(smtp({
     host : this.config.host || 'localhost',
     port : parseInt(this.config.port, 10) || 25,
-    secureConnection : this.config.ssl,
+    secure : this.config.ssl,
+    //service: 'gmail',
     auth : {
       user: this.config.username,
       pass: this.config.password
     }
-  });
+  }))
+
+  this.transport.use('compile', htmlToText({}) );
 
 }
 util.inherits( Email, Resource );
@@ -60,10 +61,6 @@ Email.basicDashboard = {
     type        : 'text',
     description : 'Optional; if not provided you will need to provide a \'from\' address in every request'
   }, {
-    name        : 'defaultTemplate',
-    type        : 'text',
-    description : 'Optional; if not provided no default template will be used and the mail is plain txt'
-  }, {
     name        : 'internalOnly',
     type        : 'checkbox',
     description : 'Only allow internal scripts to send email'
@@ -90,7 +87,6 @@ Email.prototype.handle = function ( ctx, next ) {
 
   var options = ctx.body || {};
   options.from = options.from || this.config.defaultFromAddress;
-  options.template = options.template || this.config.defaultTemplate;
 
   var errors = {};
   if ( !options.to ) {
@@ -99,67 +95,55 @@ Email.prototype.handle = function ( ctx, next ) {
   if ( !options.from ) {
     errors.from = '\'from\' is required';
   }
-  if ( !options.text ) {
-    errors.text = '\'text\' is required';
+  if ( !options.text && !options.html ) {
+    errors.text = '\'text\' or \'html\' is required';
   }
   if ( Object.keys(errors).length ) {
     return ctx.done({ statusCode: 400, errors: errors });
   }
 
+
+  // trim
+  options.subject = options.subject ? options.subject.trim() : '';
+  options.text = options.text ? options.text.trim() : '';
+
   var that = this;
 
-  async.waterfall([
-    function ( callback ) {
-      if ( options.template ) {
-        return emailTemplates( templatesDir, callback );
-      }
-      callback( null, null );
-    },
-    function ( template, callback ) {
-      if ( template ) {
-        return template( options.template, options.locals, callback );
-      }
-      callback( null, null, null );
+  var env = that.options.server.options.env;
+  if (that.config.productionOnly && env != 'production') {
+    console.log('_______________________________________________');
+    console.log('Sent email:');
+    console.log('From:    ', options.from);
+    console.log('To:      ', options.to);
+    if (options.cc) {
+      console.log('CC:      ', options.cc);
     }
-  ],
-  function( err, html, text ) {
-    if ( err ) {
-      console.log( err );
+    if (options.bcc) {
+      console.log('BCC:      ', options.bcc);
     }
-    if ( html ) {
-      options.html = html;
-    }
-    if ( text ) {
-      // grab text from templating engine
-      options.text = text;
-    }
-
-    if ( that.config.productionOnly && that.options.server.options.env == 'development' ) {
-      console.log();
-      console.log('Sent email:');
-      console.log('From:    ', options.from);
-      console.log('To:      ', options.to);
-      console.log('Subject: ', options.subject);
+    console.log('Subject: ', options.subject);
+    if (options.text) {
       console.log('Text:');
       console.log( options.text );
+    }
+    if (options.html) {
       console.log('HTML:');
       console.log( options.html );
-      return ctx.done( null, { message : 'Simulated sending' } );
     }
+    console.log('```````````````````````````````````````````````');
+    return ctx.done( null, { message : 'Simulated sending' } );
+  }
 
-    that.transport.sendMail(
-      options,
-      function( err, response ) {
-        if ( err ) {
-          return ctx.done( err );
-        }
-        ctx.done( null, { message : response.message } );
+  that.transport.sendMail(
+    options,
+    function( err, response ) {
+      if ( err ) {
+        return ctx.done( err );
       }
-    );
-
-  });
-
-};
+      ctx.done( null, { message : response.message } );
+    }
+  );
+}
 
 /**
  * Module export

@@ -2,7 +2,7 @@
 
 This custom resource type allows you to send an email to your users.
 
-The email resource is built on Andris Reinmans [Nodemailer](https://github.com/andris9/Nodemailer) module and Nick Baughs [node-email-templates](https://github.com/niftylettuce/node-email-templates).
+The email resource is built on Andris Reinmans [Nodemailer](https://github.com/andris9/Nodemailer) module.
 
 ## Installation
 
@@ -36,9 +36,6 @@ The SMTP username for your app.
 **defaultFromAddress**  
 A "from" email address to provide by default. If this is not provided, you will need to provide this address in every request.
 
-**defaultTemplate** 
-A default HTML template for your mails. If not provided no HTML template will be used and the mail is plain text instead.
-
 **internalOnly**  
 If checked, only allow internal requests (such as those from events) to send emails. Recommended for security.
 
@@ -51,32 +48,28 @@ To send an email, call dpd.email.post(options, callback) (replacing email with y
 
 ```
 {
-	
+
 	// The email address of the sender. Required if defaultFromAddress is not configured.
 	// Can be plain (sender@server.com) or formatted (Sender Name <sender@server.com>)
 	from : "",
-	
+
 	// Comma separated list of recipients e-mail addresses that will appear on the To: field
 	to : "",
-	
+
 	// Comma separated list of recipients e-mail addresses that will appear on the Cc: field
 	cc : "",
-	
+
 	// Comma separated list of recipients e-mail addresses that will appear on the Bcc: field
 	bcc : "",
-	
+
 	// The subject of the e-mail.
 	subject : "",
-	
+
 	// The plaintext version of the message (can also be generated via templating)
 	text : "",
-	
-	// Template name for the HTML version of the message;
-	// Defaults to defaultTemplate; If both were left blank just text is send
-	template : "",
-	
-	// Template locals / placeholders / variables (whatever you wanna call it)
-	locals : {} 
+
+	// The HTML version of the message;
+	html : "",
 }
 ```
 
@@ -98,8 +91,15 @@ dpd.email.post({
 });
 ```
 
-## Templating
 
-Just add a `template` property with a matching name to your `options` object and `locals` for variables you use inside your templates. Also make sure you place your templates inside `resources/email/templates`.
+## Template
 
-For more information about the possiblilites, which go along with using the templating engine, check out the [quick start](https://github.com/niftylettuce/node-email-templates#quick-start) provided by [node-email-templates](https://github.com/niftylettuce/node-email-templates).
+This package no longer provides template feature. You can use
+
+ - [https://www.npmjs.org/package/handlebars]
+ - [https://www.npmjs.org/package/ejs]
+ - [https://www.npmjs.org/package/lotemplate]
+
+for render html or text before calling dpd.email.post()
+
+Thanks
