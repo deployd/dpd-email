@@ -14,7 +14,7 @@ var Resource       = require('deployd/lib/resource'),
  * Module setup.
  */
 
-function Email( options ) {
+function Email( ) {
 
   Resource.apply( this, arguments );
 
