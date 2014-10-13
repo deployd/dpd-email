@@ -7,8 +7,7 @@ util           = require('util'),
 path           = require('path'),
 async          = require('async'),
 nodemailer     = require('nodemailer'),
-templatesDir   = path.join( __dirname, '../..', 'resources', 'email', 'templates' ),
-emailTemplates = require('email-templates');
+templatesDir   = path.join( __dirname, '../..', 'resources', 'email', 'templates' );
 
 var smtp = require('nodemailer-smtp-transport');
 
@@ -71,9 +70,13 @@ Email.basicDashboard = {
         type        : 'checkbox',
         description : 'Only allow internal scripts to send email'
     }, {
-        name        : 'productionOnly',
+        name        : 'developmentDisabled',
         type        : 'checkbox',
-        description : 'If on development mode, print emails to console instead of sending them'
+        description : 'developmentDisabled'
+    }, {
+        name        : 'stagingDisabled',
+        type        : 'checkbox',
+        description : 'stagingDisabled'
     }]
 };
 
@@ -111,61 +114,36 @@ Email.prototype.handle = function ( ctx, next ) {
 
     var that = this;
 
-    async.waterfall([
-        function ( callback ) {
-            if ( options.template ) {
-                return emailTemplates( templatesDir, callback );
-            }
-            callback( null, null );
-        },
-        function ( template, callback ) {
-            if ( template ) {
-                return template( options.template, options.locals, callback );
-            }
-            callback( null, null, null );
-        }
-        ],
-        function( err, html, text ) {
+    var env = that.options.server.options.env;
+    if (
+        (env == 'development' && that.config.developmentDisabled)
+        || (env == 'staging' && that.config.stagingDisabled)
+     ) {
+        console.log();
+        console.log('Sent email:');
+        console.log('From:    ', options.from);
+        console.log('To:      ', options.to);
+        console.log('Subject: ', options.subject);
+        console.log('Text:');
+        console.log( options.text );
+        console.log('HTML:');
+        console.log( options.html );
+        return ctx.done( null, { message : 'Simulated sending' } );
+    }
+
+    that.transport.sendMail(
+        options,
+        function( err, response ) {
             if ( err ) {
-                console.log( err );
+                return ctx.done( err );
             }
-            if ( html ) {
-                options.html = html;
-            }
-            if ( text ) {
-                // grab text from templating engine
-                options.text = text;
-            }
+            ctx.done( null, { message : response.message } );
+        }
+    );
+}
 
-            if ( that.config.productionOnly && that.options.server.options.env == 'development' ) {
-                console.log();
-                console.log('Sent email:');
-                console.log('From:    ', options.from);
-                console.log('To:      ', options.to);
-                console.log('Subject: ', options.subject);
-                console.log('Text:');
-                console.log( options.text );
-                console.log('HTML:');
-                console.log( options.html );
-                return ctx.done( null, { message : 'Simulated sending' } );
-            }
+/**
+* Module export
+*/
 
-            that.transport.sendMail(
-                options,
-                function( err, response ) {
-                    if ( err ) {
-                        return ctx.done( err );
-                    }
-                    ctx.done( null, { message : response.message } );
-                }
-            );
-
-        });
-
-    };
-
-    /**
-    * Module export
-    */
-
-    module.exports = Email;
+module.exports = Email;

@@ -3,7 +3,6 @@
   "version": "0.0.3",
   "dependencies": {
     "async": "0.9.0",
-    "email-templates": "1.1.1",
     "nodemailer": "~1.2.2",
     "nodemailer-smtp-transport": "^0.1.12"
   }
