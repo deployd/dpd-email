@@ -112,6 +112,11 @@ Email.prototype.handle = function ( ctx, next ) {
         return ctx.done({ statusCode: 400, errors: errors });
     }
 
+
+    // corrects
+    options.subject = options.subject ? options.subject.trim() : '';
+
+
     var that = this;
 
     var env = that.options.server.options.env;
