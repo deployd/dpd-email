@@ -113,8 +113,9 @@ Email.prototype.handle = function ( ctx, next ) {
     }
 
 
-    // corrects
+    // trim
     options.subject = options.subject ? options.subject.trim() : '';
+    options.text = options.text ? options.text.trim() : '';
 
 
     var that = this;
@@ -124,7 +125,7 @@ Email.prototype.handle = function ( ctx, next ) {
         (env == 'development' && that.config.developmentDisabled)
         || (env == 'staging' && that.config.stagingDisabled)
      ) {
-        console.log();
+        console.log('_______________________________________________');
         console.log('Sent email:');
         console.log('From:    ', options.from);
         console.log('To:      ', options.to);
@@ -133,6 +134,7 @@ Email.prototype.handle = function ( ctx, next ) {
         console.log( options.text );
         console.log('HTML:');
         console.log( options.html );
+        console.log('```````````````````````````````````````````````');
         return ctx.done( null, { message : 'Simulated sending' } );
     }
 
