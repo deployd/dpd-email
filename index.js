@@ -10,6 +10,7 @@ nodemailer     = require('nodemailer'),
 templatesDir   = path.join( __dirname, '../..', 'resources', 'email', 'templates' );
 
 var smtp = require('nodemailer-smtp-transport');
+var htmlToText = require('nodemailer-html-to-text').htmlToText;
 
 /**
 * Module setup.
@@ -28,7 +29,9 @@ function Email( ) {
             user: this.config.username,
             pass: this.config.password
         }
-    }));
+    }))
+
+    this.transport.use('compile', htmlToText({}) );
 
 }
 util.inherits( Email, Resource );
@@ -70,13 +73,9 @@ Email.basicDashboard = {
         type        : 'checkbox',
         description : 'Only allow internal scripts to send email'
     }, {
-        name        : 'developmentDisabled',
+        name        : 'productionOnly',
         type        : 'checkbox',
-        description : 'developmentDisabled'
-    }, {
-        name        : 'stagingDisabled',
-        type        : 'checkbox',
-        description : 'stagingDisabled'
+        description : 'productionOnly'
     }]
 };
 
@@ -105,8 +104,8 @@ Email.prototype.handle = function ( ctx, next ) {
     if ( !options.from ) {
         errors.from = '\'from\' is required';
     }
-    if ( !options.text ) {
-        errors.text = '\'text\' is required';
+    if ( !options.text && !options.html ) {
+        errors.text = '\'text\' or \'html\' is required';
     }
     if ( Object.keys(errors).length ) {
         return ctx.done({ statusCode: 400, errors: errors });
@@ -117,14 +116,10 @@ Email.prototype.handle = function ( ctx, next ) {
     options.subject = options.subject ? options.subject.trim() : '';
     options.text = options.text ? options.text.trim() : '';
 
-
     var that = this;
 
     var env = that.options.server.options.env;
-    if (
-        (env == 'development' && that.config.developmentDisabled)
-        || (env == 'staging' && that.config.stagingDisabled)
-     ) {
+    if (that.config.productionOnly && env != 'production') {
         console.log('_______________________________________________');
         console.log('Sent email:');
         console.log('From:    ', options.from);
