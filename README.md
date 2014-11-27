@@ -90,3 +90,16 @@ dpd.email.post({
 	// ...
 });
 ```
+
+
+## Template
+
+This package no longer provides template feature. You can use
+
+ - [https://www.npmjs.org/package/handlebars]
+ - [https://www.npmjs.org/package/ejs]
+ - [https://www.npmjs.org/package/lotemplate]
+
+for render html or text before calling dpd.email.post()
+
+Thanks
