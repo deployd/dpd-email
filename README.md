@@ -8,7 +8,7 @@ The email resource is built on Andris Reinmans [Nodemailer](https://github.com/a
 
 `$ npm install dpd-email`
 
-See [Installing Modules](http://docs.deployd.com/docs/using-modules/installing-modules.md) for details.
+See [Installing Modules](http://docs.deployd.com/docs/using-modules/) for details.
 
 ## Configuration
 
@@ -101,5 +101,3 @@ This package no longer provides template feature. You can use
  - [https://www.npmjs.org/package/lotemplate]
 
 for render html or text before calling dpd.email.post()
-
-Thanks
