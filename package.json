@@ -1,9 +1,6 @@
 {
   "name": "dpd-email",
   "version": "0.1.0",
-  "peerDependencies": {
-    "deployd": "~0.7.0"
-  },
   "dependencies": {
     "nodemailer": "~1.3.0",
     "nodemailer-html-to-text": "^1.0.0",
