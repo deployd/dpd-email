@@ -101,3 +101,9 @@ This package no longer provides template feature. You can use
  - [https://www.npmjs.org/package/lotemplate]
 
 for render html or text before calling dpd.email.post()
+
+
+## Contributors
+
+- [View](contributors.md)
+

@@ -1,9 +1,98 @@
 {
   "name": "dpd-email",
   "version": "0.1.0",
+  "description": "allows you to send an email to your users in deployd",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deployd/dpd-email.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dpd",
+    "deployd",
+    "dpdmodule",
+    "email"
+  ],
   "dependencies": {
     "nodemailer": "~1.3.0",
     "nodemailer-html-to-text": "^1.0.0",
     "nodemailer-smtp-transport": "^0.1.13"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Wojciech Franke",
+      "email": null,
+      "url": "https://github.com/enajski",
+      "contributions": 1,
+      "additions": 1,
+      "deletions": 1,
+      "hireable": false
+    },
+    {
+      "name": "Eric Fong",
+      "email": "ericff@gmail.com",
+      "url": "https://github.com/ericfong",
+      "contributions": 1,
+      "additions": 69,
+      "deletions": 82,
+      "hireable": true
+    },
+    {
+      "name": "Dallon Feldner",
+      "email": "",
+      "url": "https://github.com/dallonf",
+      "contributions": 1,
+      "additions": 101,
+      "deletions": 0,
+      "hireable": false
+    },
+    {
+      "name": "Nicolas Ritouet",
+      "email": "",
+      "url": "https://github.com/NicolasRitouet",
+      "contributions": 1,
+      "additions": 1,
+      "deletions": 3,
+      "hireable": false
+    },
+    {
+      "name": "Ritchie Martori",
+      "email": null,
+      "url": "https://github.com/ritch",
+      "contributions": 1,
+      "additions": 17,
+      "deletions": 0,
+      "hireable": false
+    },
+    {
+      "name": "Jörg Ossenkopp",
+      "email": "",
+      "url": "https://github.com/ozzroach",
+      "contributions": 1,
+      "additions": 0,
+      "deletions": 4,
+      "hireable": false
+    },
+    {
+      "name": "Dominik Lessel",
+      "email": "",
+      "url": "https://github.com/dominiklessel",
+      "contributions": 2,
+      "additions": 256,
+      "deletions": 73,
+      "hireable": false
+    },
+    {
+      "name": "Carsten Milling",
+      "email": "cmil@hashtable.de",
+      "url": "https://github.com/cmil",
+      "contributions": 2,
+      "additions": 2,
+      "deletions": 2,
+      "hireable": true
+    }
+  ]
 }
