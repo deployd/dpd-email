@@ -1,8 +1,8 @@
 # Email Resource
 
-This custom resource type allows you to send an email to your users.
+Module for Deployd that allows you to send an email to your users.
 
-The email resource is built on Andris Reinmans [Nodemailer](https://github.com/andris9/Nodemailer) module.
+This is built on Andris Reinmans [Nodemailer](https://github.com/andris9/Nodemailer) module.
 
 ## Installation
 
@@ -105,5 +105,4 @@ for render html or text before calling dpd.email.post()
 
 ## Contributors
 
-- [View](contributors.md)
-
+- [View](https://github.com/deployd/dpd-email/graphs/contributors)

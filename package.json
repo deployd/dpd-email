@@ -1,7 +1,7 @@
 {
   "name": "dpd-email",
   "version": "0.1.0",
-  "description": "allows you to send an email to your users in deployd",
+  "description": "Module for Deployd that allows you to send an email to your users",
   "main": "index.js",
   "repository": {
     "type": "git",
