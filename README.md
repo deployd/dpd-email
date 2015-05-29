@@ -6,7 +6,7 @@ This is built on Andris Reinmans [Nodemailer](https://github.com/andris9/Nodemai
 
 ## Installation
 
-`$ npm install dpd-email`
+`$ npm install --save dpd-email`
 
 See [Installing Modules](http://docs.deployd.com/docs/using-modules/) for details.
 
