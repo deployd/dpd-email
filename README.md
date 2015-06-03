@@ -29,7 +29,7 @@ If checked, use SSL to communicate with your SMTP provider.
 The SMTP username for your app.
 
 **password**  
-The SMTP username for your app.  
+The SMTP password for your app.  
 
 ### Optional settings:
 
