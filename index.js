@@ -15,15 +15,15 @@ var Resource       = require('deployd/lib/resource'),
 function Email( ) {
 
   Resource.apply( this, arguments );
-  
+
   var authParams=null;
   if(this.config.username!==''){
     authParams={
       user: this.config.username,
-      pass: this.config.password
+      pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
     };
   }
-  
+
   this.transport = nodemailer.createTransport(smtp({
     host : this.config.host || 'localhost',
     port : parseInt(this.config.port, 10) || 25,
@@ -60,7 +60,7 @@ Email.basicDashboard = {
   }, {
     name        : 'password',
     type        : 'text',
-    description : 'SMTP password'
+    description : 'SMTP password. Leave this blank to use the DPD_EMAIL_SMTP_PASSWORD environment variable'
   }, {
     name        : 'defaultFromAddress',
     type        : 'text',

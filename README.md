@@ -29,7 +29,7 @@ If checked, use SSL to communicate with your SMTP provider.
 The SMTP username for your app.
 
 **password**  
-The SMTP password for your app.  
+The SMTP password for your app. Leave this blank to use the DPD\_EMAIL\_SMTP\_PASSWORD environment variable.  
 
 ### Optional settings:
 
