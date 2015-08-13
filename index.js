@@ -16,13 +16,11 @@ function Email( ) {
 
   Resource.apply( this, arguments );
 
-  var authParams=null;
-  if(this.config.username!==''){
-    authParams={
+  var authParams={
       user: this.config.username || process.env.DPD_EMAIL_USERNAME,
       pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
     };
-  }
+  
 
   this.transport = nodemailer.createTransport(smtp({
     host : this.config.host || process.env.DPD_EMAIL_HOST || 'localhost',
