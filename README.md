@@ -17,16 +17,16 @@ Before using the email resource, you must go to its Dashboard page and configure
 ### Required settings:
 
 **host**  
-The hostname of your SMTP provider.
+The hostname of your SMTP provider. Leave this blank to use the DPD\_EMAIL\_HOST environment variable.
 
 **port**  
-The port number of your SMTP provider. Defaults to 25; 587 is also common.
+The port number of your SMTP provider. Leave this blank to use the DPD\_EMAIL\_PORT environment variable. Defaults to 25; 587 is also common.
 
 **ssl**  
 If checked, use SSL to communicate with your SMTP provider.
 
 **username**  
-The SMTP username for your app.
+The SMTP username for your app. Leave this blank to use the DPD\_EMAIL\_USERNAME environment variable.
 
 **password**  
 The SMTP password for your app. Leave this blank to use the DPD\_EMAIL\_SMTP\_PASSWORD environment variable.  
@@ -34,7 +34,7 @@ The SMTP password for your app. Leave this blank to use the DPD\_EMAIL\_SMTP\_PA
 ### Optional settings:
 
 **defaultFromAddress**  
-A "from" email address to provide by default. If this is not provided, you will need to provide this address in every request.
+A "from" email address to provide by default. Leave this blank to use the DPD\_EMAIL\_DEFAULT\_FROM environment variable. If this is not provided, you will need to provide this address in every request.
 
 **internalOnly**  
 If checked, only allow internal requests (such as those from events) to send emails. Recommended for security.

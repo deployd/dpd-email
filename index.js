@@ -16,17 +16,15 @@ function Email( ) {
 
   Resource.apply( this, arguments );
 
-  var authParams=null;
-  if(this.config.username!==''){
-    authParams={
-      user: this.config.username,
+  var authParams={
+      user: this.config.username || process.env.DPD_EMAIL_USERNAME,
       pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
     };
-  }
+  
 
   this.transport = nodemailer.createTransport(smtp({
-    host : this.config.host || 'localhost',
-    port : parseInt(this.config.port, 10) || 25,
+    host : this.config.host || process.env.DPD_EMAIL_HOST || 'localhost',
+    port : parseInt(this.config.port, 10) || process.env.DPD_EMAIL_PORT || 25,
     secure : this.config.ssl,
     //service: 'gmail',
     auth : authParams
@@ -44,11 +42,11 @@ Email.basicDashboard = {
   {
     name        : 'host',
     type        : 'text',
-    description : 'Host name of your SMTP provider. Defaults to \'localhost\'.'
+    description : 'Host name of your SMTP provider. Defaults to DPD_EMAIL_HOST env variable or \'localhost\'.'
   }, {
     name        : 'port',
     type        : 'numeric',
-    description : 'Port number of your SMTP provider. Defaults to 25'
+    description : 'Port number of your SMTP provider. Defaults to DPD_EMAIL_PORT env variable or 25'
   }, {
     name        : 'ssl',
     type        : 'checkbox',
@@ -56,7 +54,7 @@ Email.basicDashboard = {
   }, {
     name        : 'username',
     type        : 'text',
-    description : 'SMTP username'
+    description : 'SMTP username. Leave blank to use the DPD_EMAIL_USERNAME env variable'
   }, {
     name        : 'password',
     type        : 'text',
@@ -64,7 +62,7 @@ Email.basicDashboard = {
   }, {
     name        : 'defaultFromAddress',
     type        : 'text',
-    description : 'Optional; if not provided you will need to provide a \'from\' address in every request'
+    description : 'Optional; if not provided will use the DPD_EMAIL_DEFAULT_FROM env var or you will need to provide a \'from\' address in every request'
   }, {
     name        : 'internalOnly',
     type        : 'checkbox',
@@ -91,7 +89,7 @@ Email.prototype.handle = function ( ctx, next ) {
   }
 
   var options = ctx.body || {};
-  options.from = options.from || this.config.defaultFromAddress;
+  options.from = options.from || this.config.defaultFromAddress || process.env.DPD_EMAIL_DEFAULT_FROM;
 
   var errors = {};
   if ( !options.to ) {
