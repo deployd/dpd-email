@@ -138,7 +138,9 @@ Email.prototype.handle = function ( ctx, next ) {
     return ctx.done( null, { message : 'Simulated sending' } );
   }
 
-  that.transport.use('compile', inlineBase64);
+  if(options.html){
+    that.transport.use('compile', inlineBase64);
+  }
 
   that.transport.sendMail(
     options,
