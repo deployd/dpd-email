@@ -6,7 +6,8 @@ var Resource       = require('deployd/lib/resource'),
     util           = require('util'),
     nodemailer     = require('nodemailer'),
     smtp           = require('nodemailer-smtp-transport'),
-    htmlToText     = require('nodemailer-html-to-text').htmlToText;
+    htmlToText     = require('nodemailer-html-to-text').htmlToText,
+    inlineBase64   = require('nodemailer-plugin-inline-base64');
 
 /**
  * Module setup.
@@ -20,7 +21,7 @@ function Email( ) {
       user: this.config.username || process.env.DPD_EMAIL_USERNAME,
       pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
     };
-  
+
 
   this.transport = nodemailer.createTransport(smtp({
     host : this.config.host || process.env.DPD_EMAIL_HOST || 'localhost',
@@ -136,6 +137,8 @@ Email.prototype.handle = function ( ctx, next ) {
     console.log('```````````````````````````````````````````````');
     return ctx.done( null, { message : 'Simulated sending' } );
   }
+
+  that.transport.use('compile', inlineBase64);
 
   that.transport.sendMail(
     options,
