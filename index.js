@@ -6,7 +6,8 @@ var Resource       = require('deployd/lib/resource'),
     util           = require('util'),
     nodemailer     = require('nodemailer'),
     smtp           = require('nodemailer-smtp-transport'),
-    htmlToText     = require('nodemailer-html-to-text').htmlToText;
+    htmlToText     = require('nodemailer-html-to-text').htmlToText,
+    inlineBase64   = require('nodemailer-plugin-inline-base64');
 
 /**
  * Module setup.
@@ -20,7 +21,7 @@ function Email( ) {
       user: this.config.username || process.env.DPD_EMAIL_USERNAME,
       pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
     };
-  
+
 
   this.transport = nodemailer.createTransport(smtp({
     host : this.config.host || process.env.DPD_EMAIL_HOST || 'localhost',
@@ -71,6 +72,10 @@ Email.basicDashboard = {
     name        : 'productionOnly',
     type        : 'checkbox',
     description : 'If on development mode, print emails to console instead of sending them'
+  },{
+    name        : 'base64',
+    type        : 'checkbox',
+    description : 'If using base64 encrypted images, encode them properly'
   }]
 };
 
@@ -135,6 +140,10 @@ Email.prototype.handle = function ( ctx, next ) {
     }
     console.log('```````````````````````````````````````````````');
     return ctx.done( null, { message : 'Simulated sending' } );
+  }
+
+  if(options.html && that.config.base64){
+    that.transport.use('compile', inlineBase64);
   }
 
   that.transport.sendMail(
