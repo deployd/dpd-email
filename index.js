@@ -72,6 +72,10 @@ Email.basicDashboard = {
     name        : 'productionOnly',
     type        : 'checkbox',
     description : 'If on development mode, print emails to console instead of sending them'
+  },{
+    name        : 'base64',
+    type        : 'checkbox',
+    description : 'If using base64 encrypted images, encode them properly'
   }]
 };
 
@@ -138,7 +142,7 @@ Email.prototype.handle = function ( ctx, next ) {
     return ctx.done( null, { message : 'Simulated sending' } );
   }
 
-  if(options.html){
+  if(options.html && that.config.base64){
     that.transport.use('compile', inlineBase64);
   }
 
