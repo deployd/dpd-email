@@ -1,6 +1,6 @@
 {
   "name": "dpd-email",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Module for Deployd that allows you to send an email to your users",
   "main": "index.js",
   "repository": {
