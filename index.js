@@ -16,11 +16,13 @@ var Resource       = require('deployd/lib/resource'),
 function Email( ) {
 
   Resource.apply( this, arguments );
-
-  var authParams={
-      user: this.config.username || process.env.DPD_EMAIL_USERNAME,
-      pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
-    };
+  var authParams = null;
+  if (!this.config.anonymous) {
+      authParams={
+        user: this.config.username || process.env.DPD_EMAIL_USERNAME,
+        pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
+      };
+  }
 
 
   this.transport = nodemailer.createTransport(smtp({
@@ -52,6 +54,10 @@ Email.basicDashboard = {
     name        : 'ssl',
     type        : 'checkbox',
     description : 'Use SSL.'
+  }, {
+    name        : 'anonymous',
+    type        : 'checkbox',
+    description : 'Check to login anonymously to server'
   }, {
     name        : 'username',
     type        : 'text',
