@@ -17,7 +17,8 @@ function Email( ) {
 
   Resource.apply( this, arguments );
   var authParams = null;
-  if (!this.config.anonymous) {
+  //If an empty string needs to be passed as username, use the environment variable
+  if (this.config.username != '' && typeof process.env.DPD_EMAIL_USERNAME != 'undefined') {
       authParams={
         user: this.config.username || process.env.DPD_EMAIL_USERNAME,
         pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
@@ -54,10 +55,6 @@ Email.basicDashboard = {
     name        : 'ssl',
     type        : 'checkbox',
     description : 'Use SSL.'
-  }, {
-    name        : 'anonymous',
-    type        : 'checkbox',
-    description : 'Check to login anonymously to server'
   }, {
     name        : 'username',
     type        : 'text',
