@@ -17,9 +17,8 @@ function Email( ) {
 
   Resource.apply( this, arguments );
   var authParams = null;
-  //If an empty string needs to be passed as username, use the environment variable
-  if (this.config.username != '' && typeof process.env.DPD_EMAIL_USERNAME != 'undefined') {
-      authParams={
+  if (this.config.username !== '' || typeof process.env.DPD_EMAIL_USERNAME !== 'undefined') {
+      authParams = {
         user: this.config.username || process.env.DPD_EMAIL_USERNAME,
         pass: this.config.password || process.env.DPD_EMAIL_SMTP_PASSWORD
       };
